@@ -8,8 +8,8 @@
     <packaging>pom</packaging>
     
 	<modules>
-        <module>book.web</module>
-        <module>book.back</module>
+        <module>book-web</module>
+        <module>book-back</module>
     </modules>
 	
     <properties>
