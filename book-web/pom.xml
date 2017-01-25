@@ -11,7 +11,7 @@
     <artifactId>book-web</artifactId>
     <packaging>war</packaging>
 
-    <name>book.web</name>
+    <name>book-web</name>
 
    <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
