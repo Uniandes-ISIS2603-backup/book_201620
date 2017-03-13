@@ -10,7 +10,8 @@
         'authorModule',
         'editorialModule',
         'reviewModule',
-        'bookModule'
+        'bookModule',
+        'prizeModule'
     ]);
     app.directive('datePicker', [function () {
         return {
