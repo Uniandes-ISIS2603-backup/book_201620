@@ -5,6 +5,7 @@
  */
 package co.edu.uniandes.rest.books.dtos;
 
+import co.edu.uniandes.csw.bookstore.entities.BookEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,28 +27,38 @@ public class BookDTO {
     // Relación a una editorial
     private EditorialDTO editorial;
 
- 
     /**
      * Constructor por defecto
      */
     public BookDTO() {
     }
 
-    /**
-     * Constructor con parámetros.
-     *
-     * @param id identificador de la book
-     * @param name nombre de la book
-     */
-    public BookDTO(Long id, String name, String isbn, String image, String description, Date publishingdate, EditorialDTO editorial) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.isbn = isbn;
-        this.image = image;
-        this.description = description;
-        this.publishingdate = publishingdate;
-        this.editorial = editorial;
+    public BookDTO(BookEntity bookE) {
+
+        this.id = bookE.getId();
+        this.name = bookE.getName();
+        this.isbn = bookE.getIsbn();
+        this.image = bookE.getImage();
+        this.description = bookE.getDescription();
+        this.publishingdate = bookE.getPublishDate();
+        this.editorial = new EditorialDTO(bookE.getEditorial());
+    }
+
+    public BookEntity toEntity() {
+
+        BookEntity bookE = new BookEntity();
+        bookE.setId(this.id);
+        bookE.setName(this.name);
+        bookE.setIsbn(this.isbn);
+        bookE.setImage(this.image);
+        bookE.setDescription(this.description);
+        bookE.setPublishDate(this.publishingdate);
+        if (this.editorial != null) {
+            bookE.setEditorial(this.editorial.toEntity());               
+        } else {
+            bookE.setEditorial(null);
+        }
+        return bookE;
     }
 
     /**

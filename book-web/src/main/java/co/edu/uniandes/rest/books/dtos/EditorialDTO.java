@@ -5,6 +5,8 @@
  */
 package co.edu.uniandes.rest.books.dtos;
 
+import co.edu.uniandes.csw.bookstore.entities.EditorialEntity;
+
 /**
  * Objeto de transferencia de datos de Ciudades.
  * @citi Asistente
@@ -29,6 +31,10 @@ public class EditorialDTO {
 		this.id = id;
 		this.name = name;
 	}
+
+    EditorialDTO(EditorialEntity editorial) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 	/**
      * @return the id
@@ -64,5 +70,9 @@ public class EditorialDTO {
     @Override
     public String toString() {
     	return "{ id : " + getId() + ", name : \"" + getName() + "\" }" ;  
+    }
+
+    EditorialEntity toEntity() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

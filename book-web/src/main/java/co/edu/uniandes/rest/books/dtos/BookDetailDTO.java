@@ -5,6 +5,9 @@
  */
 package co.edu.uniandes.rest.books.dtos;
 
+import co.edu.uniandes.csw.bookstore.entities.AuthorEntity;
+import co.edu.uniandes.csw.bookstore.entities.BookEntity;
+import co.edu.uniandes.csw.bookstore.entities.ReviewEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,29 +16,55 @@ import java.util.List;
  *
  * @author Rubby
  */
-public class BookDetailDTO extends BookDTO{
-   
+public class BookDetailDTO extends BookDTO {
+
     // relación  cero o muchos reviews 
     private List<ReviewDTO> reviews = new ArrayList<>();
-    
+
     // relación  cero o muchos author
     private List<AuthorDTO> authors = new ArrayList<>();
-    
-    
+
     public BookDetailDTO() {
-        
+        super();
     }
-   
-    public BookDetailDTO(Long id, String name, String isbn, String image, String description, Date publishingdate, EditorialDTO editorial) {
-        super(id, name, isbn, image, description,publishingdate, editorial);
-       
-     }
-    
-    public BookDetailDTO(BookDTO book) {
-       super(book.getId(), book.getName(), book.getIsbn(), book.getImage(), book.getDescription(), book.getPublishingdate(), book.getEditorial());
-        
-       
-     }
+
+    public BookDetailDTO(BookEntity bookE) {
+        super(bookE);
+        if (bookE != null) {
+            authors = new ArrayList<>();
+            for (AuthorEntity entityAuthor : bookE.getAuthors()) {
+                authors.add(new AuthorDTO(entityAuthor));
+            }
+            reviews = new ArrayList<>();
+            for (ReviewEntity entityReview : bookE.getReviews()) {
+                reviews.add(new ReviewDTO(entityReview));
+            }
+
+        }
+    }
+
+    @Override
+    public BookEntity toEntity() {
+        BookEntity bookE = super.toEntity();
+        if (reviews != null) {
+            List<ReviewEntity> reviewsEntity = new ArrayList<>();
+            for(ReviewDTO dtoReview : reviews)
+            {
+                reviewsEntity.add(dtoReview.toEntity());
+            }
+            bookE.setReviews(reviewsEntity);
+        }
+        if (authors != null) {
+            List<AuthorEntity> authorsEntity = new ArrayList<>();
+            for(AuthorDTO dtoAuthor : authors)
+            {
+                authorsEntity.add(dtoAuthor.toEntity());
+            }
+            bookE.setAuthors(authorsEntity);
+        }
+        return bookE;
+    }
+
     /**
      * @return the reviews
      */
@@ -62,11 +91,5 @@ public class BookDetailDTO extends BookDTO{
      */
     public void setAuthors(List<AuthorDTO> authors) {
         this.authors = authors;
-    }
-    
-    @Override
-    public String toString() {
-        return super.toString() + ", Reviews \"" + getReviews().toString()
-                + ", Authors \"" + getAuthors().toString();
     }
 }

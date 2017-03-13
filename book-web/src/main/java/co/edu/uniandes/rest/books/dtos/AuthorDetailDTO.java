@@ -6,7 +6,6 @@
 package co.edu.uniandes.rest.books.dtos;
 
 import co.edu.uniandes.csw.bookstore.entities.AuthorEntity;
-import co.edu.uniandes.csw.bookstore.entities.BookEntity;
 import java.util.Date;
 
 /**
@@ -14,16 +13,19 @@ import java.util.Date;
  *
  * @citi Asistente
  */
-public class AuthorDTO {
+public class AuthorDetailDTO {
 
     private Long id;
     private String name;
     private Date birthDate;
 
+    private BookDTO books;
+    
+  
     /**
      * Constructor por defecto
      */
-    public AuthorDTO() {
+    public AuthorDetailDTO() {
     }
 
     /**
@@ -32,10 +34,9 @@ public class AuthorDTO {
      * @param id identificador de la book
      * @param name nombre de la book
      */
-    public AuthorDTO(AuthorEntity authorE) {
-        this.id = authorE.getId();
-        this.name = authorE.getName();
-        this.birthDate = authorE.getBirthDate();
+    public AuthorDetailDTO(AuthorEntity authorE) {
+       super();
+       
     }
 
     public AuthorEntity toEntity() {
@@ -84,6 +85,20 @@ public class AuthorDTO {
      */
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    /**
+     * @return the books
+     */
+    public BookDTO getBooks() {
+        return books;
+    }
+
+    /**
+     * @param books the books to set
+     */
+    public void setBooks(BookDTO books) {
+        this.books = books;
     }
 
    

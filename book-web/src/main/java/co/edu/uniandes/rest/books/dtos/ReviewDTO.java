@@ -1,5 +1,6 @@
 package co.edu.uniandes.rest.books.dtos;
 
+import co.edu.uniandes.csw.bookstore.entities.ReviewEntity;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -31,6 +32,10 @@ public class ReviewDTO {
         this.name = name;
         this.source = source;
         this.description = description;
+    }
+
+    ReviewDTO(ReviewEntity entityReview) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -87,6 +92,10 @@ public class ReviewDTO {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    ReviewEntity toEntity() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
