@@ -3,14 +3,17 @@
  * Clase que representa el recurso "/books"
  * Implementa varios métodos para manipular las books
  */
-package co.edu.uniandes.rest.books.resources;
+package co.edu.uniandes.csw.bookstore.resources;
 
-import co.edu.uniandes.rest.books.dtos.BookDTO;
-import co.edu.uniandes.rest.books.dtos.BookDetailDTO;
-import co.edu.uniandes.rest.books.exceptions.BookLogicException;
-import co.edu.uniandes.rest.books.mocks.BookLogicMock;
+import co.edu.uniandes.csw.bookstore.ejb.BookLogic;
+import co.edu.uniandes.csw.bookstore.dtos.BookDTO;
+import co.edu.uniandes.csw.bookstore.dtos.BookDetailDTO;
+import co.edu.uniandes.csw.bookstore.entities.BookEntity;
+import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
+import java.util.ArrayList;
 
 import java.util.List;
+import javax.inject.Inject;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,7 +37,8 @@ import javax.ws.rs.Produces;
 @Produces("application/json")
 public class BookResource {
 
-    BookLogicMock bookLogic = BookLogicMock.getInstance();
+    @Inject
+    BookLogic bookLogic;
 
     /**
      * Obtiene el listado de books.
@@ -43,8 +47,8 @@ public class BookResource {
      * @throws BookLogicException excepción retornada por la lógica
      */
     @GET
-    public List<BookDTO> getBooks() throws BookLogicException {
-        return bookLogic.getBooks();
+    public List<BookDetailDTO> getBooks() throws BookLogicException {
+        return listEntity2DetailDTO(bookLogic.getBooks());
     }
 
     /**
@@ -57,7 +61,8 @@ public class BookResource {
     @GET
     @Path("{id: \\d+}")
     public BookDetailDTO getBook(@PathParam("id") Long id) throws BookLogicException {
-        return bookLogic.getBook(id);
+        BookEntity bookE = bookLogic.getBook(id);
+        return new BookDetailDTO(bookE);
     }
 
     /**
@@ -108,5 +113,20 @@ public class BookResource {
             throw new BookLogicException("El libro no existe");
         }
         return BookAuthorsResource.class;
+    }
+
+    /**
+     * Método encargado de realizar la transformación de una lista de Entity a
+     * DetailDTO
+     *
+     * @param entityList Lista a ser transformada
+     * @return Lista de elementos DTO
+     */
+    private List<BookDetailDTO> listEntity2DetailDTO(List<BookEntity> entityList) {
+        List<BookDetailDTO> list = new ArrayList<>();
+        for (BookEntity entity : entityList) {
+            list.add(new BookDetailDTO(entity));
+        }
+        return list;
     }
 }

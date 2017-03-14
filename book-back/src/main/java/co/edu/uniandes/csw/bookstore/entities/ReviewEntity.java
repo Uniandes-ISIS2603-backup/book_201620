@@ -1,12 +1,10 @@
 package co.edu.uniandes.csw.bookstore.entities;
 
-
 import java.io.Serializable;
 import javax.persistence.Entity;
 import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
-
 
 /**
  * @generated
@@ -14,27 +12,56 @@ import javax.persistence.FetchType;
 @Entity
 public class ReviewEntity extends BaseEntity implements Serializable {
 
+    private String source;
+
+    private String description;
+    
     @PodamExclude
+    
     @ManyToOne
-    private BookEntity bookReviews;
+    private BookEntity book;
 
     /**
-     * Obtiene el atributo bookReviews.
-     *
-     * @return atributo bookReviews.
-     * @generated
+     * @return the source
      */
-    public BookEntity getBookReviews() {
-        return bookReviews;
+    public String getSource() {
+        return source;
     }
 
     /**
-     * Establece el valor del atributo bookReviews.
-     *
-     * @param bookReviews nuevo valor del atributo
-     * @generated
+     * @param source the source to set
      */
-    public void setBookReviews(BookEntity bookreviews) {
-        this.bookReviews = bookreviews;
+    public void setSource(String source) {
+        this.source = source;
     }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the book
+     */
+    public BookEntity getBook() {
+        return book;
+    }
+
+    /**
+     * @param book the book to set
+     */
+    public void setBook(BookEntity book) {
+        this.book = book;
+    }
+
+    
 }

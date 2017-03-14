@@ -3,7 +3,7 @@
  * Objeto de transferencia de datos de Ciudades.
  * Los DTO especifican los mensajes que se envían entre el cliente y el servidor.
  */
-package co.edu.uniandes.rest.books.dtos;
+package co.edu.uniandes.csw.bookstore.dtos;
 
 import co.edu.uniandes.csw.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.csw.bookstore.entities.BookEntity;

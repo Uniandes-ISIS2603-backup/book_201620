@@ -1,4 +1,4 @@
-package co.edu.uniandes.rest.books.exceptions;
+package co.edu.uniandes.csw.bookstore.exceptions;
 
 /**
  * Representa las excepciones de la lógica de BookLogic 

@@ -1,10 +1,11 @@
-package co.edu.uniandes.rest.books.resources;
+package co.edu.uniandes.csw.bookstore.resources;
 
-import co.edu.uniandes.rest.books.dtos.AuthorDTO;
-import co.edu.uniandes.rest.books.exceptions.BookLogicException;
-import co.edu.uniandes.rest.books.mocks.AuthorLogicMock;
+import co.edu.uniandes.csw.bookstore.ejb.AuthorLogic;
+import co.edu.uniandes.csw.bookstore.dtos.AuthorDTO;
+import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
 
 import java.util.List;
+import javax.inject.Inject;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,7 +17,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-
 /**
  * URI: books/{booksId: \\d+}/authors
  *
@@ -26,9 +26,8 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class BookAuthorsResource {
 
-  
-    
-    AuthorLogicMock authorLogic = new AuthorLogicMock();
+    @Inject
+    AuthorLogic authorLogic;
 
     /**
      * Obtiene el listado de authores.
@@ -41,13 +40,10 @@ public class BookAuthorsResource {
         return authorLogic.getBookAuthors(booksId);
     }
 
-  
     @PUT
     public List<AuthorDTO> updateBookAuthors(@PathParam("booksId") Long booksId, List<AuthorDTO> authors) throws BookLogicException {
         return authorLogic.updateBookAuthors(booksId, authors);
     }
-
-    
 
     /**
      * Elimina los datos de un author

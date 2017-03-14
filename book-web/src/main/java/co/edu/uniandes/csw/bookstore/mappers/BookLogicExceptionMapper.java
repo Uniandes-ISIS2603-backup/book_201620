@@ -1,10 +1,10 @@
-package co.edu.uniandes.rest.books.mappers;
+package co.edu.uniandes.csw.bookstore.mappers;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import co.edu.uniandes.rest.books.exceptions.BookLogicException;
+import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
 
 /**
  * Convertidor de Excepciones BookLogicException a mensajes REST.

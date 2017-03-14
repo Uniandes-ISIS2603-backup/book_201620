@@ -1,4 +1,4 @@
-package co.edu.uniandes.rest.books.dtos;
+package co.edu.uniandes.csw.bookstore.dtos;
 
 import co.edu.uniandes.csw.bookstore.entities.ReviewEntity;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,6 +13,8 @@ public class ReviewDTO {
     private String source;
 
     private String description;
+    
+    private BookDTO book;
 
     /**
      * Constructor por defecto
@@ -20,24 +22,16 @@ public class ReviewDTO {
     public ReviewDTO() {
     }
 
-    /**
-     * Constructor con parámetros.
-     *
-     * @param id identificador de la book
-     * @param name nombre de la book
-     */
-    public ReviewDTO(Long id, String name, String source, String description) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.source = source;
-        this.description = description;
+   
+    public ReviewDTO(ReviewEntity entity) {
+       
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.source = entity.getSource();
+        this.description = entity.getDescription();
     }
 
-    ReviewDTO(ReviewEntity entityReview) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+   
     /**
      * @return the id
      */

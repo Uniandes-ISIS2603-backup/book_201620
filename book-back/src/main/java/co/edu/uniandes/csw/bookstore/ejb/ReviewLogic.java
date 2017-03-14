@@ -77,9 +77,7 @@ public class ReviewLogic {
      * @generated
      */
     public ReviewEntity createReview(Long bookid, ReviewEntity entity) {
-        BookEntity book = bookLogic.getBook(bookid);
-        entity.setBookReviews(book);
-        entity = persistence.create(entity);
+     
         return entity;
     }
 
@@ -92,8 +90,7 @@ public class ReviewLogic {
      * @generated
      */
     public ReviewEntity updateReview(Long bookid, ReviewEntity entity) {
-        BookEntity book = bookLogic.getBook(bookid);
-        entity.setBookReviews(book);
+       
         return persistence.update(entity);
     }
 

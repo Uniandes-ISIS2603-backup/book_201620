@@ -2,7 +2,7 @@
  * RestConfig.java
  * Configura el servicio JAX-RS.
  */
-package co.edu.uniandes.rest.books.resources;
+package co.edu.uniandes.csw.bookstore.resources;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.ApplicationPath;

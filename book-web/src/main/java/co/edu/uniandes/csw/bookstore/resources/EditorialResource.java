@@ -3,13 +3,15 @@
  * Clase que representa el recurso "/editorials"
  * Implementa varios métodos para manipular las editoriales
  */
-package co.edu.uniandes.rest.books.resources;
+package co.edu.uniandes.csw.bookstore.resources;
 
-import co.edu.uniandes.rest.books.dtos.EditorialDTO;
-import co.edu.uniandes.rest.books.exceptions.BookLogicException;
-import co.edu.uniandes.rest.books.mocks.EditorialLogicMock;
+import co.edu.uniandes.csw.bookstore.ejb.EditorialLogic;
+import co.edu.uniandes.csw.bookstore.dtos.EditorialDTO;
+import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
+
 
 import java.util.List;
+import javax.inject.Inject;
 
 
 import javax.ws.rs.DELETE;
@@ -35,8 +37,8 @@ import javax.ws.rs.Produces;
 @Produces("application/json")
 public class EditorialResource {
 
-	
-	EditorialLogicMock editorialLogic = new EditorialLogicMock();
+	@Inject
+	EditorialLogic editorialLogic;
 
 	/**
 	 * Obtiene el listado de editoriales. 

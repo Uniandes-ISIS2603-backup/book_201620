@@ -3,13 +3,14 @@
  * Clase que representa el recurso "/authors"
  * Implementa varios métodos para manipular las authores
  */
-package co.edu.uniandes.rest.books.resources;
+package co.edu.uniandes.csw.bookstore.resources;
 
-import co.edu.uniandes.rest.books.dtos.AuthorDTO;
-import co.edu.uniandes.rest.books.exceptions.BookLogicException;
-import co.edu.uniandes.rest.books.mocks.AuthorLogicMock;
+import co.edu.uniandes.csw.bookstore.ejb.AuthorLogic;
+import co.edu.uniandes.csw.bookstore.dtos.AuthorDTO;
+import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
 
 import java.util.List;
+import javax.inject.Inject;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,7 +34,10 @@ import javax.ws.rs.Produces;
 @Produces("application/json")
 public class AuthorResource {
 
-    AuthorLogicMock authorLogic = new AuthorLogicMock();
+    @Inject
+    AuthorLogic authorLogic;
+
+ 
 
     /**
      * Obtiene el listado de authores.

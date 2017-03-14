@@ -1,20 +1,11 @@
-/*
- * BookDTO
- * Objeto de transferencia de datos de Ciudades.
- * Los DTO especifican los mensajes que se envían entre el cliente y el servidor.
- */
-package co.edu.uniandes.rest.books.dtos;
+
+package co.edu.uniandes.csw.bookstore.dtos;
 
 import co.edu.uniandes.csw.bookstore.entities.BookEntity;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-/**
- * Objeto de transferencia de datos de Ciudades.
- *
- * @citi Asistente
- */
+import java.util.Date;
+
+
 public class BookDTO {
 
     private Long id;
@@ -143,21 +134,6 @@ public class BookDTO {
      */
     public void setPublishingdate(Date publishingdate) {
         this.publishingdate = publishingdate;
-    }
-
-    /**
-     * Convierte el objeto a una cadena
-     */
-    @Override
-    public String toString() {
-        return "{ id : " + getId()
-                + ", name : \"" + getName()
-                + ", description : \"" + getDescription()
-                + ", image : \"" + getImage()
-                + ", isbn : \"" + getIsbn()
-                + ", editorial : \"" + getEditorial().getName()
-                + ", publishingdate: \"" + getPublishingdate()
-                + "\" }";
     }
 
     /**

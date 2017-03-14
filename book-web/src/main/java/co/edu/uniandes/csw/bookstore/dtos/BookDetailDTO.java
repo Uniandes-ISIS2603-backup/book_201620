@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package co.edu.uniandes.rest.books.dtos;
+
+package co.edu.uniandes.csw.bookstore.dtos;
 
 import co.edu.uniandes.csw.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.csw.bookstore.entities.BookEntity;
 import co.edu.uniandes.csw.bookstore.entities.ReviewEntity;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author Rubby
- */
+
 public class BookDetailDTO extends BookDTO {
 
     // relación  cero o muchos reviews 
@@ -28,15 +20,19 @@ public class BookDetailDTO extends BookDTO {
         super();
     }
 
-    public BookDetailDTO(BookEntity bookE) {
-        super(bookE);
-        if (bookE != null) {
+    /** 
+     * Constructor para transformar un Entity a un DTO
+     * @param entity 
+     */
+    public BookDetailDTO(BookEntity entity) {
+        super(entity);
+        if (entity != null) {
             authors = new ArrayList<>();
-            for (AuthorEntity entityAuthor : bookE.getAuthors()) {
+            for (AuthorEntity entityAuthor : entity.getAuthors()) {
                 authors.add(new AuthorDTO(entityAuthor));
             }
             reviews = new ArrayList<>();
-            for (ReviewEntity entityReview : bookE.getReviews()) {
+            for (ReviewEntity entityReview : entity.getReviews()) {
                 reviews.add(new ReviewDTO(entityReview));
             }
 
