@@ -13,7 +13,7 @@ public class ReviewDTO {
     private String source;
 
     private String description;
-    
+
     private BookDTO book;
 
     /**
@@ -22,16 +22,23 @@ public class ReviewDTO {
     public ReviewDTO() {
     }
 
-   
     public ReviewDTO(ReviewEntity entity) {
-       
+
         this.id = entity.getId();
         this.name = entity.getName();
         this.source = entity.getSource();
         this.description = entity.getDescription();
     }
 
-   
+    public ReviewEntity toEntity() {
+        ReviewEntity entity = new ReviewEntity();
+        entity.setId(this.id);
+        entity.setName(this.name);
+        entity.setSource(this.source);
+        entity.setDescription(this.description);
+        return entity;
+    }
+
     /**
      * @return the id
      */
@@ -86,10 +93,6 @@ public class ReviewDTO {
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    ReviewEntity toEntity() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

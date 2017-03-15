@@ -6,8 +6,11 @@
 package co.edu.uniandes.csw.bookstore.resources;
 
 import co.edu.uniandes.csw.bookstore.ejb.AuthorLogic;
-import co.edu.uniandes.csw.bookstore.dtos.AuthorDTO;
-import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
+import co.edu.uniandes.csw.bookstore.dtos.AuthorDetailDTO;
+import co.edu.uniandes.csw.bookstore.entities.AuthorEntity;
+import co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException;
+import java.util.ArrayList;
+
 
 import java.util.List;
 import javax.inject.Inject;
@@ -26,7 +29,7 @@ import javax.ws.rs.Produces;
  *
  * Note que la aplicación (definida en RestConfig.java) define la ruta "/api" y
  * este recurso tiene la ruta "authors". Al ejecutar la aplicación, el recurse
- * será accesibe a través de la ruta "/api/authors"
+ * será accesible a través de la ruta "/api/authors"
  *
  *
  */
@@ -39,69 +42,43 @@ public class AuthorResource {
 
  
 
-    /**
-     * Obtiene el listado de authores.
-     *
-     * @return lista de authores
-     * @throws BookLogicException excepción retornada por la lógica
-     */
     @GET
-    public List<AuthorDTO> getAuthors() throws BookLogicException {
-        return authorLogic.getAuthors();
+    public List<AuthorDetailDTO> getAuthors() throws BusinessLogicException {
+        return listEntity2DetailDTO(authorLogic.getAuthors());
     }
 
-    /**
-     * Obtiene un author
-     *
-     * @param id identificador de el author
-     * @return author encontrada
-     * @throws BookLogicException cuando el author no existe
-     */
+  
     @GET
     @Path("{id: \\d+}")
-    public AuthorDTO getAuthor(@PathParam("id") Long id) throws BookLogicException {
-        return authorLogic.getAuthor(id);
+    public AuthorDetailDTO getAuthor(@PathParam("id") Long id) throws BusinessLogicException {
+        return new AuthorDetailDTO(authorLogic.getAuthor(id));
     }
 
-    /**
-     * Agrega un author
-     *
-     * @param author author a agregar
-     * @return datos de el author a agregar
-     * @throws BookLogicException cuando ya existe un author con el id
-     * suministrado
-     */
+    
     @POST
-    public AuthorDTO createAuthor(AuthorDTO author) throws BookLogicException {
-        return authorLogic.createAuthor(author);
+    public AuthorDetailDTO createAuthor(AuthorDetailDTO author) throws BusinessLogicException {
+        return new AuthorDetailDTO(authorLogic.createAuthor(author.toEntity()));
     }
 
-    /**
-     * Actualiza los datos de un author
-     *
-     * @param id identificador de el author a modificar
-     * @param author author a modificar
-     * @return datos de el author modificada
-     * @throws BookLogicException cuando no existe un author con el id
-     * suministrado
-     */
+    
     @PUT
     @Path("{id: \\d+}")
-    public AuthorDTO updateAuthor(@PathParam("id") Long id, AuthorDTO author) throws BookLogicException {
-        return authorLogic.updateAuthor(id, author);
+    public AuthorDetailDTO updateAuthor(@PathParam("id") Long id, AuthorDetailDTO author) throws BusinessLogicException {
+        return new AuthorDetailDTO(authorLogic.updateAuthor(id, author.toEntity()));
     }
 
-    /**
-     * Elimina los datos de un author
-     *
-     * @param id identificador de el author a eliminar
-     * @throws BookLogicException cuando no existe un author con el id
-     * suministrado
-     */
+   
     @DELETE
     @Path("{id: \\d+}")
-    public void deleteAuthor(@PathParam("id") Long id) throws BookLogicException {
+    public void deleteAuthor(@PathParam("id") Long id) throws BusinessLogicException {
         authorLogic.deleteAuthor(id);
     }
 
+    private List<AuthorDetailDTO> listEntity2DetailDTO(List<AuthorEntity> entityList) {
+        List<AuthorDetailDTO> list = new ArrayList<>();
+        for (AuthorEntity entity : entityList) {
+            list.add(new AuthorDetailDTO(entity));
+        }
+        return list;
+    }
 }

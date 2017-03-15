@@ -51,8 +51,8 @@ public class AuthorLogic {
     }
 
   
-    public AuthorEntity updateAuthor(AuthorEntity entity) {
-        logger.log(Level.INFO, "Inicia proceso de actualizar autor con id={0}", entity.getId());
+    public AuthorEntity updateAuthor(Long id, AuthorEntity entity) {
+        logger.log(Level.INFO, "Inicia proceso de actualizar autor con id={0}", id);
         AuthorEntity newEntity = persistence.update(entity);
         logger.log(Level.INFO, "Termina proceso de actualizar autor con id={0}", entity.getId());
         return newEntity;
@@ -73,7 +73,7 @@ public class AuthorLogic {
 
 
     public void removeBook(Long bookId, Long authorId) {
-        bookLogic.removeAuthor(authorId, bookId);
+        bookLogic.deleteAuthor(authorId, bookId);
     }
 
    
@@ -81,7 +81,7 @@ public class AuthorLogic {
         AuthorEntity author = getAuthor(authorId);
         for (BookEntity book : author.getBooks()) {
             if (!books.contains(book)) {
-                bookLogic.removeAuthor(authorId, book.getId());
+                bookLogic.deleteAuthor(book.getId(), authorId);
             }
         }
         for (BookEntity book : books) {

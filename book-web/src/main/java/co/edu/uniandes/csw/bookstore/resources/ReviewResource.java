@@ -7,7 +7,9 @@ package co.edu.uniandes.csw.bookstore.resources;
 
 import co.edu.uniandes.csw.bookstore.ejb.ReviewLogic;
 import co.edu.uniandes.csw.bookstore.dtos.ReviewDTO;
-import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
+import co.edu.uniandes.csw.bookstore.entities.ReviewEntity;
+import co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.inject.Inject;
@@ -35,71 +37,42 @@ import javax.ws.rs.Produces;
 public class ReviewResource {
 
     @Inject
-    ReviewLogic reviewLogic ;
+    ReviewLogic reviewLogic;
 
-    /**
-     * Obtiene el listado de reviews.
-     *
-     * @return lista de reviews
-     * @throws BookLogicException excepción retornada por la lógica
-     */
     @GET
-    public List<ReviewDTO> getReviews(@PathParam("idBook") Long idBook) throws BookLogicException {
-        return reviewLogic.getReviews(idBook);
+    public List<ReviewDTO> getReviews(@PathParam("idBook") Long idBook) throws BusinessLogicException {
+        return listEntity2DTO(reviewLogic.getReviews(idBook));
     }
 
-    /**
-     * Obtiene una review
-     *
-     * @param id identificador de la review
-     * @return review encontrada
-     * @throws BookLogicException cuando la review no existe
-     */
     @GET
     @Path("{id: \\d+}")
-    public ReviewDTO getReview(@PathParam("idBook") Long idBook, @PathParam("id") Long id) throws BookLogicException {
-        return reviewLogic.getReview(idBook, id);
+    public ReviewDTO getReview(@PathParam("idBook") Long idBook, @PathParam("id") Long id) throws BusinessLogicException {
+        return new ReviewDTO(reviewLogic.getReview(idBook, id));
     }
 
-    /**
-     * Agrega una review
-     *
-     * @param review review a agregar
-     * @return datos de la review a agregar
-     * @throws BookLogicException cuando ya existe una review con el id
-     * suministrado
-     */
     @POST
-    public ReviewDTO createReview(@PathParam("idBook") Long idBook, ReviewDTO review) throws BookLogicException {
-        return reviewLogic.createReview(idBook, review);
+    public ReviewDTO createReview(@PathParam("idBook") Long idBook, ReviewDTO review) throws BusinessLogicException {
+        return new ReviewDTO(reviewLogic.createReview(idBook, review.toEntity()));
     }
 
-    /**
-     * Actualiza los datos de una review
-     *
-     * @param id identificador de la review a modificar
-     * @param review review a modificar
-     * @return datos de la review modificada
-     * @throws BookLogicException cuando no existe una review con el id
-     * suministrado
-     */
     @PUT
     @Path("{id: \\d+}")
-    public ReviewDTO updateReview(@PathParam("idBook") Long idBook, @PathParam("id") Long id, ReviewDTO review) throws BookLogicException {
-        return reviewLogic.updateReview(idBook, id, review);
+    public ReviewDTO updateReview(@PathParam("idBook") Long idBook, @PathParam("id") Long id, ReviewDTO review) throws BusinessLogicException {
+        return new ReviewDTO(reviewLogic.updateReview(idBook, id, review.toEntity()));
     }
 
-    /**
-     * Elimina los datos de una review
-     *
-     * @param id identificador de la review a eliminar
-     * @throws BookLogicException cuando no existe una review con el id
-     * suministrado
-     */
     @DELETE
     @Path("{id: \\d+}")
-    public void deleteReview(@PathParam("idBook") Long idBook, @PathParam("id") Long id) throws BookLogicException {
+    public void deleteReview(@PathParam("idBook") Long idBook, @PathParam("id") Long id) throws BusinessLogicException {
         reviewLogic.deleteReview(idBook, id);
+    }
+    
+    private List<ReviewDTO> listEntity2DTO(List<ReviewEntity> entityList) {
+        List<ReviewDTO> list = new ArrayList<>();
+        for (ReviewEntity entity : entityList) {
+            list.add(new ReviewDTO(entity));
+        }
+        return list;
     }
 
 }

@@ -56,8 +56,8 @@ public class BookLogic  {
     }
 
    
-    public BookEntity updateBook(BookEntity entity) throws BusinessLogicException {
-        logger.log(Level.INFO, "Inicia proceso de actualizar libro con id={0}", entity.getId());
+    public BookEntity updateBook(Long id, BookEntity entity) throws BusinessLogicException {
+        logger.log(Level.INFO, "Inicia proceso de actualizar libro con id={0}", id);
         if (!validateISBN(entity.getIsbn())) {
             throw new BusinessLogicException("El ISBN es inválido");
         }
@@ -74,7 +74,7 @@ public class BookLogic  {
     }
 
  
-    public List<AuthorEntity> getAuthors(Long bookId) {
+    public List<AuthorEntity> getBookAuthors(Long bookId) {
         return getBook(bookId).getAuthors();
     }
 
@@ -107,7 +107,7 @@ public class BookLogic  {
     }
 
 
-    public void removeAuthor(Long authorId, Long bookId) {
+    public void deleteAuthor(Long bookId, Long authorId ) {
         BookEntity bookEntity = getBook(bookId);
         AuthorEntity authorEntity = authorPersistence.find(authorId);
         if (authorEntity == null) {

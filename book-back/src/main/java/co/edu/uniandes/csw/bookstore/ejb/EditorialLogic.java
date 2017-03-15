@@ -50,8 +50,8 @@ public class EditorialLogic {
     }
 
   
-    public EditorialEntity updateEditorial(EditorialEntity entity) {
-        logger.log(Level.INFO, "Inicia proceso de actualizar editorial con id={0}", entity.getId());
+    public EditorialEntity updateEditorial(Long id, EditorialEntity entity) {
+        logger.log(Level.INFO, "Inicia proceso de actualizar editorial con id={0}", id);
         EditorialEntity newEntity = persistence.update(entity);
         logger.log(Level.INFO, "Termina proceso de actualizar editorial con id={0}", entity.getId());
         return newEntity;

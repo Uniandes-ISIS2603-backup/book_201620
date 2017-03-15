@@ -1,18 +1,13 @@
-/*
- * EditorialResource.java
- * Clase que representa el recurso "/editorials"
- * Implementa varios métodos para manipular las editoriales
- */
 package co.edu.uniandes.csw.bookstore.resources;
 
 import co.edu.uniandes.csw.bookstore.ejb.EditorialLogic;
-import co.edu.uniandes.csw.bookstore.dtos.EditorialDTO;
-import co.edu.uniandes.csw.bookstore.exceptions.BookLogicException;
-
+import co.edu.uniandes.csw.bookstore.dtos.EditorialDetailDTO;
+import co.edu.uniandes.csw.bookstore.entities.EditorialEntity;
+import co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.inject.Inject;
-
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,76 +20,58 @@ import javax.ws.rs.Produces;
 
 /**
  * Clase que implementa el recurso REST correspondiente a "editorials".
- * 
- * Note que la aplicación (definida en RestConfig.java) define la ruta
- * "/api" y este recurso tiene la ruta "editorials". 
- * Al ejecutar la aplicación, el recurse será accesibe a través de la 
- * ruta "/api/editorials" 
- * 
- * 
+ *
+ * Note que la aplicación (definida en RestConfig.java) define la ruta "/api" y
+ * este recurso tiene la ruta "editorials". Al ejecutar la aplicación, el
+ * recurse será accesibe a través de la ruta "/api/editorials"
+ *
+ *
  */
 @Path("editorials")
 @Produces("application/json")
 public class EditorialResource {
 
-	@Inject
-	EditorialLogic editorialLogic;
+    @Inject
+    EditorialLogic editorialLogic;
 
-	/**
-	 * Obtiene el listado de editoriales. 
-	 * @return lista de editoriales
-	 * @throws BookLogicException excepción retornada por la lógica  
-	 */
     @GET
-    public List<EditorialDTO> getEditorials() throws BookLogicException {
-        return editorialLogic.getEditorials();
+    public List<EditorialDetailDTO> getEditorials() throws BusinessLogicException {
+        return listEntity2DetailDTO(editorialLogic.getEditorials());
     }
 
-    /**
-     * Obtiene un editorial
-     * @param id identificador de el editorial
-     * @return editorial encontrada
-     * @throws BookLogicException cuando el editorial no existe
-     */
+    
     @GET
     @Path("{id: \\d+}")
-    public EditorialDTO getEditorial(@PathParam("id") Long id) throws BookLogicException {
-        return editorialLogic.getEditorial(id);
+    public EditorialDetailDTO getEditorial(@PathParam("id") Long id) throws BusinessLogicException {
+        return new EditorialDetailDTO(editorialLogic.getEditorial(id));
     }
 
-    /**
-     * Agrega un editorial
-     * @param editorial editorial a agregar
-     * @return datos de el editorial a agregar
-     * @throws BookLogicException cuando ya existe un editorial con el id suministrado
-     */
+    
     @POST
-    public EditorialDTO createEditorial(EditorialDTO editorial) throws BookLogicException {
-        return editorialLogic.createEditorial(editorial);
+    public EditorialDetailDTO createEditorial(EditorialDetailDTO editorial) throws BusinessLogicException {
+        return new EditorialDetailDTO(editorialLogic.createEditorial(editorial.toEntity()));
     }
 
-    /**
-     * Actualiza los datos de un editorial
-     * @param id identificador de el editorial a modificar
-     * @param editorial editorial a modificar
-     * @return datos de el editorial modificada 
-     * @throws BookLogicException cuando no existe un editorial con el id suministrado
-     */
+  
     @PUT
     @Path("{id: \\d+}")
-    public EditorialDTO updateEditorial(@PathParam("id") Long id, EditorialDTO editorial) throws BookLogicException {
-        return editorialLogic.updateEditorial(id, editorial);
+    public EditorialDetailDTO updateEditorial(@PathParam("id") Long id, EditorialDetailDTO editorial) throws BusinessLogicException {
+        return new EditorialDetailDTO(editorialLogic.updateEditorial(id, editorial.toEntity()));
     }
 
-    /**
-     * Elimina los datos de un editorial
-     * @param id identificador de el editorial a eliminar
-     * @throws BookLogicException cuando no existe un editorial con el id suministrado
-     */
+    
     @DELETE
     @Path("{id: \\d+}")
-    public void deleteEditorial(@PathParam("id") Long id) throws BookLogicException {
-    	editorialLogic.deleteEditorial(id);
+    public void deleteEditorial(@PathParam("id") Long id) throws BusinessLogicException {
+        editorialLogic.deleteEditorial(id);
+    }
+    
+    private List<EditorialDetailDTO> listEntity2DetailDTO(List<EditorialEntity> entityList) {
+        List<EditorialDetailDTO> list = new ArrayList<>();
+        for (EditorialEntity entity : entityList) {
+            list.add(new EditorialDetailDTO(entity));
+        }
+        return list;
     }
 
 }

@@ -89,7 +89,7 @@ public class ReviewLogic {
      * @return Instancia de ReviewEntity con los datos actualizados.
      * @generated
      */
-    public ReviewEntity updateReview(Long bookid, ReviewEntity entity) {
+    public ReviewEntity updateReview(Long bookid, Long reviewid, ReviewEntity entity) {
        
         return persistence.update(entity);
     }
