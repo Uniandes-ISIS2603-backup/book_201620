@@ -8,7 +8,7 @@
             $urlRouterProvider.otherwise("/editorialsList");
      
             sp.state('editorialsList', {
-                url: '/editorials',
+                url: '/editorialsList',
                 views: {
                     'mainView': {
                         controller: 'editorialsCtrl',
