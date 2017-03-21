@@ -9,9 +9,11 @@ import co.edu.uniandes.csw.bookstore.entities.EditorialEntity;
 
 /**
  * Objeto de transferencia de datos de Ciudades.
+ *
  * @citi Asistente
  */
 public class EditorialDTO {
+
     private Long id;
     private String name;
 
@@ -19,24 +21,14 @@ public class EditorialDTO {
      * Constructor por defecto
      */
     public EditorialDTO() {
-	}
-
-    /**
-     * Constructor con parámetros.
-     * @param id identificador de la book
-     * @param name nombre de la book
-     */
-    public EditorialDTO(Long id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-
-    EditorialDTO(EditorialEntity editorial) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-	/**
+    public EditorialDTO(EditorialEntity editorial) {
+        this.id = editorial.getId();
+        this.name = editorial.getName();
+    }
+
+    /**
      * @return the id
      */
     public Long getId() {
@@ -63,16 +55,13 @@ public class EditorialDTO {
     public void setName(String name) {
         this.name = name;
     }
-    
-    /**
-     * Convierte el objeto a una cadena
-     */
-    @Override
-    public String toString() {
-    	return "{ id : " + getId() + ", name : \"" + getName() + "\" }" ;  
-    }
+
+   
 
     EditorialEntity toEntity() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       EditorialEntity entity = new EditorialEntity();
+       entity.setId(this.id);
+       entity.setName(this.name);
+       return entity;
     }
 }

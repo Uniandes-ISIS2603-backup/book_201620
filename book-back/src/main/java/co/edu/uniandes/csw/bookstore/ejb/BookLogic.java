@@ -1,6 +1,5 @@
 package co.edu.uniandes.csw.bookstore.ejb;
 
-
 import co.edu.uniandes.csw.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.csw.bookstore.entities.BookEntity;
 import co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException;
@@ -14,17 +13,16 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 @Stateless
-public class BookLogic  {
+public class BookLogic {
 
     private static final Logger logger = Logger.getLogger(BookLogic.class.getName());
 
-
+    @Inject
     private BookPersistence persistence;
 
     @Inject
     private AuthorPersistence authorPersistence;
 
-   
     public List<BookEntity> getBooks() {
         logger.info("Inicia proceso de consultar todos los libros");
         List<BookEntity> books = persistence.findAll();
@@ -32,7 +30,6 @@ public class BookLogic  {
         return books;
     }
 
- 
     public BookEntity getBook(Long id) {
         logger.log(Level.INFO, "Inicia proceso de consultar libro con id={0}", id);
         BookEntity book = persistence.find(id);
@@ -44,7 +41,6 @@ public class BookLogic  {
         return book;
     }
 
-   
     public BookEntity createBook(BookEntity entity) throws BusinessLogicException {
         logger.info("Inicia proceso de creación de libro");
         if (!validateISBN(entity.getIsbn())) {
@@ -55,7 +51,6 @@ public class BookLogic  {
         return entity;
     }
 
-   
     public BookEntity updateBook(Long id, BookEntity entity) throws BusinessLogicException {
         logger.log(Level.INFO, "Inicia proceso de actualizar libro con id={0}", id);
         if (!validateISBN(entity.getIsbn())) {
@@ -66,18 +61,15 @@ public class BookLogic  {
         return newEntity;
     }
 
-   
     public void deleteBook(Long id) {
         logger.log(Level.INFO, "Inicia proceso de borrar libro con id={0}", id);
         persistence.delete(id);
         logger.log(Level.INFO, "Termina proceso de borrar libro con id={0}", id);
     }
 
- 
     public List<AuthorEntity> getBookAuthors(Long bookId) {
         return getBook(bookId).getAuthors();
     }
-
 
     public AuthorEntity getAuthor(Long bookId, Long authorId) {
         List<AuthorEntity> authors = getBook(bookId).getAuthors();
@@ -92,7 +84,6 @@ public class BookLogic  {
         throw new IllegalArgumentException("El autor no está asociado al libro");
     }
 
-  
     public AuthorEntity addAuthor(Long authorId, Long bookId) throws BusinessLogicException {
         BookEntity bookEntity = getBook(bookId);
         AuthorEntity authorEntity = authorPersistence.find(authorId);
@@ -106,8 +97,7 @@ public class BookLogic  {
         return authorEntity;
     }
 
-
-    public void deleteAuthor(Long bookId, Long authorId ) {
+    public void deleteAuthor(Long bookId, Long authorId) {
         BookEntity bookEntity = getBook(bookId);
         AuthorEntity authorEntity = authorPersistence.find(authorId);
         if (authorEntity == null) {
@@ -115,7 +105,6 @@ public class BookLogic  {
         }
         bookEntity.getAuthors().remove(authorEntity);
     }
-
 
     public List<AuthorEntity> replaceAuthors(List<AuthorEntity> authors, Long bookId) throws BusinessLogicException {
         BookEntity bookEntity = getBook(bookId);
@@ -144,5 +133,4 @@ public class BookLogic  {
         return false;
     }
 
-   
 }

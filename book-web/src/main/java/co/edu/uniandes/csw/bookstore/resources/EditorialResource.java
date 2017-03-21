@@ -17,6 +17,7 @@ import javax.ws.rs.PUT;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 
 /**
  * Clase que implementa el recurso REST correspondiente a "editorials".
@@ -39,33 +40,41 @@ public class EditorialResource {
         return listEntity2DetailDTO(editorialLogic.getEditorials());
     }
 
-    
     @GET
     @Path("{id: \\d+}")
     public EditorialDetailDTO getEditorial(@PathParam("id") Long id) throws BusinessLogicException {
+        EditorialEntity entity = editorialLogic.getEditorial(id);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
         return new EditorialDetailDTO(editorialLogic.getEditorial(id));
     }
 
-    
     @POST
     public EditorialDetailDTO createEditorial(EditorialDetailDTO editorial) throws BusinessLogicException {
         return new EditorialDetailDTO(editorialLogic.createEditorial(editorial.toEntity()));
     }
 
-  
     @PUT
     @Path("{id: \\d+}")
     public EditorialDetailDTO updateEditorial(@PathParam("id") Long id, EditorialDetailDTO editorial) throws BusinessLogicException {
+        EditorialEntity entity = editorialLogic.getEditorial(id);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
         return new EditorialDetailDTO(editorialLogic.updateEditorial(id, editorial.toEntity()));
     }
 
-    
     @DELETE
     @Path("{id: \\d+}")
     public void deleteEditorial(@PathParam("id") Long id) throws BusinessLogicException {
+        EditorialEntity entity = editorialLogic.getEditorial(id);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
         editorialLogic.deleteEditorial(id);
     }
-    
+
     private List<EditorialDetailDTO> listEntity2DetailDTO(List<EditorialEntity> entityList) {
         List<EditorialDetailDTO> list = new ArrayList<>();
         for (EditorialEntity entity : entityList) {

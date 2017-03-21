@@ -28,11 +28,10 @@ import javax.ws.rs.Produces;
  *
  * Note que la aplicación (definida en RestConfig.java) define la ruta "/api" y
  * este recurso tiene la ruta "reviews". Al ejecutar la aplicación, el recurse
- * será accesibe a través de la ruta "/api/books/idBook/reviews"
+ * será accesible a través de la ruta "/api/books/idBook/reviews"
  *
- * @citi Asistente
  */
-@Path("books/{idBook: \\d+}/reviews")
+
 @Produces("application/json")
 public class ReviewResource {
 

@@ -5,7 +5,6 @@
  */
 package co.edu.uniandes.csw.bookstore.resources;
 
-import co.edu.uniandes.csw.bookstore.dtos.AuthorDTO;
 import co.edu.uniandes.csw.bookstore.dtos.AuthorDetailDTO;
 import co.edu.uniandes.csw.bookstore.ejb.BookLogic;
 import co.edu.uniandes.csw.bookstore.dtos.BookDetailDTO;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,10 +34,10 @@ import javax.ws.rs.WebApplicationException;
  * este recurso tiene la ruta "books". Al ejecutar la aplicación, el recurse
  * será accesibe a través de la ruta "/api/books"
  *
- * @citi Asistente
  */
 @Path("books")
 @Produces("application/json")
+@Consumes("application/json")
 public class BookResource {
 
     @Inject
@@ -51,8 +51,11 @@ public class BookResource {
     @GET
     @Path("{id: \\d+}")
     public BookDetailDTO getBook(@PathParam("id") Long id) throws BusinessLogicException {
-        BookEntity bookE = bookLogic.getBook(id);
-        return new BookDetailDTO(bookE);
+        BookEntity entity = bookLogic.getBook(id);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
+        return new BookDetailDTO(entity);
     }
 
     @POST
@@ -63,32 +66,44 @@ public class BookResource {
     @PUT
     @Path("{id: \\d+}")
     public BookDetailDTO updateBook(@PathParam("id") Long id, BookDetailDTO book) throws BusinessLogicException {
+        BookEntity entity = bookLogic.getBook(id);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
         return new BookDetailDTO(bookLogic.updateBook(id, book.toEntity()));
     }
 
     @DELETE
     @Path("{id: \\d+}")
     public void deleteBook(@PathParam("id") Long id) throws BusinessLogicException {
+        BookEntity entity = bookLogic.getBook(id);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
         bookLogic.deleteBook(id);
     }
 
-    @GET
+    
     @Path("{booksId: \\d+}/authors")
-    public List<AuthorDetailDTO> getBookAuthors(@PathParam("booksId") Long booksId) throws BusinessLogicException {
-        return listAuthorEntity2DetailDTO(bookLogic.getBookAuthors(booksId));
+    public AuthorBookResource getBookAuthorResource(@PathParam("booksId") Long booksId) {
+         BookEntity entity = bookLogic.getBook(booksId);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
+        return new AuthorBookResource();
     }
 
-    @PUT
-    public List<AuthorDetailDTO> updateBookAuthors(@PathParam("booksId") Long booksId, List<AuthorDetailDTO> authors) throws BusinessLogicException {
-        return null;// listAuthorEntity2DetailDTO(bookLogic.replaceAuthors(authorsE, booksId));
+    
+    @Path("books/{idBook: \\d+}/reviews")
+    public ReviewResource getReviewResource(@PathParam("booksId") Long booksId) {
+         BookEntity entity = bookLogic.getBook(booksId);
+        if (entity == null) {
+            throw new WebApplicationException("El libro no existe", 404);
+        }
+        return new ReviewResource();
     }
-
-    @DELETE
-    @Path("{id: \\d+}")
-    public void deleteBookAuthor(@PathParam("booksId") Long booksId, @PathParam("id") Long id) throws BusinessLogicException {
-        bookLogic.deleteAuthor(booksId, id);
-    }
-
+  
+    
     private List<BookDetailDTO> listBookEntity2DetailDTO(List<BookEntity> entityList) {
         List<BookDetailDTO> list = new ArrayList<>();
         for (BookEntity entity : entityList) {
@@ -96,12 +111,6 @@ public class BookResource {
         }
         return list;
     }
-
-    private List<AuthorDetailDTO> listAuthorEntity2DetailDTO(List<AuthorEntity> entityList) {
-        List<AuthorDetailDTO> list = new ArrayList<>();
-        for (AuthorEntity entity : entityList) {
-            list.add(new AuthorDetailDTO(entity));
-        }
-        return list;
-    }
+    
+    
 }

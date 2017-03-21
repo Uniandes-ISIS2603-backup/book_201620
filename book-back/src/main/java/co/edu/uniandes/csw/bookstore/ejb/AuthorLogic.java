@@ -94,7 +94,7 @@ public class AuthorLogic {
     }
 
 
-    public List<BookEntity> getBooks(Long authorId) {
+    public List<BookEntity> getAuthorBooks(Long authorId) {
         return getAuthor(authorId).getBooks();
     }
 

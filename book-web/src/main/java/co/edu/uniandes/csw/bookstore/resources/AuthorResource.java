@@ -11,7 +11,6 @@ import co.edu.uniandes.csw.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException;
 import java.util.ArrayList;
 
-
 import java.util.List;
 import javax.inject.Inject;
 
@@ -23,6 +22,7 @@ import javax.ws.rs.PUT;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 
 /**
  * Clase que implementa el recurso REST correspondiente a "authors".
@@ -40,37 +40,43 @@ public class AuthorResource {
     @Inject
     AuthorLogic authorLogic;
 
- 
-
     @GET
     public List<AuthorDetailDTO> getAuthors() throws BusinessLogicException {
         return listEntity2DetailDTO(authorLogic.getAuthors());
     }
 
-  
     @GET
     @Path("{id: \\d+}")
     public AuthorDetailDTO getAuthor(@PathParam("id") Long id) throws BusinessLogicException {
-        return new AuthorDetailDTO(authorLogic.getAuthor(id));
+        AuthorEntity entity = authorLogic.getAuthor(id);
+        if (entity == null) {
+            throw new WebApplicationException("El author no existe", 404);
+        }
+        return new AuthorDetailDTO();
     }
 
-    
     @POST
     public AuthorDetailDTO createAuthor(AuthorDetailDTO author) throws BusinessLogicException {
         return new AuthorDetailDTO(authorLogic.createAuthor(author.toEntity()));
     }
 
-    
     @PUT
     @Path("{id: \\d+}")
     public AuthorDetailDTO updateAuthor(@PathParam("id") Long id, AuthorDetailDTO author) throws BusinessLogicException {
+        AuthorEntity entity = authorLogic.getAuthor(id);
+        if (entity == null) {
+            throw new WebApplicationException("El author no existe", 404);
+        }
         return new AuthorDetailDTO(authorLogic.updateAuthor(id, author.toEntity()));
     }
 
-   
     @DELETE
     @Path("{id: \\d+}")
     public void deleteAuthor(@PathParam("id") Long id) throws BusinessLogicException {
+        AuthorEntity entity = authorLogic.getAuthor(id);
+        if (entity == null) {
+            throw new WebApplicationException("El author no existe", 404);
+        }
         authorLogic.deleteAuthor(id);
     }
 
